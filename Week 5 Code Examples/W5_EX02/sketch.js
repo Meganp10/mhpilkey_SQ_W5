@@ -8,12 +8,13 @@
 // Adjust these values to match your own sprite sheet.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  225/4,  // 256px total / 8 frames
-  frameHeight: 225,  // only one row, full sheet height
-  numFrames:   4,   // 4 frames of spin animation
-  animSpeed:   6,   // draw() frames per sprite frame (lower = faster)
-  scale:       2.0, // scale up so the coin is visible on screen
+  frameWidth: 212.25,
+  frameHeight: 840,
+  numFrames: 4,
+  animSpeed: 6,
+  scale: 0.25
 };
+
 
 // ------------------------------------------------------------
 // COIN OBJECTS
