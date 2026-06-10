@@ -5,7 +5,7 @@
 | File | Source |
 |------|--------|
 | `assets/images/frog2.png` | Pinterest: Frog boy sprite sheet [1]|
-| `assets/images/coin_gold.png` | Toppng, Coin sprite sheet — Toppng.com [2] |
+| `assets/images/coins1.png` | Toppng, Coin sprite sheet — Toppng.com [2] |
 
 ## References
 
