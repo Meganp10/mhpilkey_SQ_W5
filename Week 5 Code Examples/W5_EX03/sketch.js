@@ -14,17 +14,21 @@
 // Same structure as Example 1. See that file for full notes.
 // ------------------------------------------------------------
 const SPRITE = {
-  frameWidth:  75,
-  frameHeight: 150,
-  numFrames:   4,
-  animSpeed:   20,
-  scale:       0.5,
+  frameWidth:  313.5,  // width of one frame  (300px / 4 frames)
+  frameHeight: 313.5, // height of one frame (600px / 4 rows)
+  numFrames:   4,   // frames per row
+  animSpeed:   20,  // draw() frames per sprite frame (higher = slower)
+  scale:       0.25, // draw at half original size
+
+  // Row index for each direction
+  // Change these if your sheet has a different row order
   rows: {
     down:  0,
     up:    1,
     right: 2,
     left:  3,
   },
+
   offsets: {
     down:  { x: 0, y: 0  },
     up:    { x: 0, y: 0  },
@@ -38,13 +42,12 @@ const SPRITE = {
 // Same structure as Example 2. See that file for full notes.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  32,
-  frameHeight: 32,
-  numFrames:   8,
-  animSpeed:   6,
-  scale:       1.5,
+  frameWidth: 212.25,
+  frameHeight: 840,
+  numFrames: 4,
+  animSpeed: 6,
+  scale: 0.25
 };
-
 // ------------------------------------------------------------
 // MAZE
 // A 2D array where each number represents one tile type.
@@ -128,8 +131,8 @@ let coinSheet;
 // are ready before the sketch tries to use them.
 // ============================================================
 function preload() {
-  characterSheet = loadImage("assets/images/walking.png");
-  coinSheet      = loadImage("assets/images/coin_gold.png");
+  characterSheet = loadImage("assets/images/frog2.png");
+  coinSheet      = loadImage("assets/images/coins1.png");
 }
 
 // ============================================================
