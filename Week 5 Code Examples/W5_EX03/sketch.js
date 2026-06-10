@@ -13,6 +13,8 @@
 // SPRITE CONFIGURATION — Walking Character
 // Same structure as Example 1. See that file for full notes.
 // ------------------------------------------------------------
+
+
 const SPRITE = {
   frameWidth:  313.5,  // width of one frame  (300px / 4 frames)
   frameHeight: 313.5, // height of one frame (600px / 4 rows)
@@ -124,6 +126,7 @@ let gameWon = false;
 // Images
 let characterSheet;
 let coinSheet;
+let bgImage; // background image for the maze
 
 // ============================================================
 // preload()
@@ -133,6 +136,8 @@ let coinSheet;
 function preload() {
   characterSheet = loadImage("assets/images/frog2.png");
   coinSheet      = loadImage("assets/images/coins1.png");
+
+  bgImage = loadImage("assets/images/lilypad.jpg");
 }
 
 // ============================================================
@@ -180,7 +185,9 @@ function setup() {
 // appears on top of it.
 // ============================================================
 function draw() {
-  background(20);
+  imageMode(CORNER);
+  image(bgImage, 0, 0, width, height);
+  imageMode(CENTER); // switch back for sprites 
 
   drawMaze();
   updateCoins();
@@ -212,21 +219,33 @@ function drawMaze() {
 
   for (let row = 0; row < MAZE.length; row++) {
     for (let col = 0; col < MAZE[row].length; col++) {
+
       let tile = MAZE[row][col];
 
-      // Exit tile changes colour when all coins are collected
-      if (tile === 4) {
-        if (coinsCollected === coins.length) {
-          fill(30, 200, 120); // bright green — exit is open
-        } else {
-          fill(60, 100, 80);  // dim green — exit is locked
-        }
-      } else {
-        let c = TILE_COLORS[tile];
-        fill(c[0], c[1], c[2]);
+      // Leave floor tiles transparent so the pond image shows through
+      if (tile === 0 || tile === 2 || tile === 3) {
+        continue;
       }
 
-      rect(col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+      // Exit tile
+      if (tile === 4) {
+        if (coinsCollected === coins.length) {
+          fill(30, 200, 120);
+        } else {
+          fill(60, 100, 80);
+        }
+      }
+      // Wall tile
+      else if (tile === 1) {
+        fill(40, 90, 40);
+      }
+
+      rect(
+        col * TILE_SIZE,
+        row * TILE_SIZE,
+        TILE_SIZE,
+        TILE_SIZE
+      );
     }
   }
 }
