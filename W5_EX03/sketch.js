@@ -14,11 +14,12 @@
 // Same structure as Example 1. See that file for full notes.
 // ------------------------------------------------------------
 const SPRITE = {
-  frameWidth:  75,
-  frameHeight: 150,
-  numFrames:   4,
-  animSpeed:   20,
-  scale:       0.5,
+ frameWidth:  313.5,  // width of one frame  (300px / 4 frames)
+  frameHeight: 313.5, // height of one frame (600px / 4 rows)
+  numFrames:   4,   // frames per row
+  animSpeed:   20,  // draw() frames per sprite frame (higher = slower)
+  scale:       0.25, // draw at half original size
+
   rows: {
     down:  0,
     up:    1,
@@ -38,11 +39,11 @@ const SPRITE = {
 // Same structure as Example 2. See that file for full notes.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  32,
-  frameHeight: 32,
-  numFrames:   8,
-  animSpeed:   6,
-  scale:       1.5,
+  frameWidth: 212.25,
+  frameHeight: 840,
+  numFrames: 4,
+  animSpeed: 6,
+  scale: 0.25
 };
 
 // ------------------------------------------------------------
@@ -121,6 +122,7 @@ let gameWon = false;
 // Images
 let characterSheet;
 let coinSheet;
+let bgImage;
 
 // ============================================================
 // preload()
@@ -128,8 +130,9 @@ let coinSheet;
 // are ready before the sketch tries to use them.
 // ============================================================
 function preload() {
-  characterSheet = loadImage("assets/images/walking.png");
-  coinSheet      = loadImage("assets/images/coin_gold.png");
+  characterSheet = loadImage("assets/images/frog2.png");
+  coinSheet      = loadImage("assets/images/coins1.png");
+  bgImage        = loadImage("assets/images/lilypad.jpg");
 }
 
 // ============================================================
@@ -177,7 +180,9 @@ function setup() {
 // appears on top of it.
 // ============================================================
 function draw() {
-  background(20);
+  imageMode(CORNER);
+  image(bgImage, 0, 0, width, height);
+   imageMode(CENTER);
 
   drawMaze();
   updateCoins();
