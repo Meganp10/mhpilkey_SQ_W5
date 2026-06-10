@@ -69,7 +69,7 @@ let characterSheet; // the loaded sprite sheet image
 // ============================================================
 function preload() {
   // loadImage() loads the sprite sheet before setup() runs
-  characterSheefrot = loadImage("frog2.png");
+  characterSheet = loadImage("assets/images/frog2.png");
 }
 
 // ============================================================
