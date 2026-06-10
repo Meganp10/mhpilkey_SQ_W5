@@ -8,9 +8,9 @@
 // Adjust these values to match your own sprite sheet.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  32,  // 256px total / 8 frames
-  frameHeight: 32,  // only one row, full sheet height
-  numFrames:   8,   // 8 frames of spin animation
+  frameWidth:  75,  // 256px total / 8 frames
+  frameHeight: 75,  // only one row, full sheet height
+  numFrames:   3,   // 3 frames of spin animation
   animSpeed:   6,   // draw() frames per sprite frame (lower = faster)
   scale:       2.0, // scale up so the coin is visible on screen
 };
@@ -40,7 +40,7 @@ let coinSheet; // the loaded coin sprite sheet image
 // are ready before the sketch tries to use them.
 // ============================================================
 function preload() {
-  coinSheet = loadImage("assets/images/coin_gold.png");
+  coinSheet = loadImage("assets/images/gold.png");
 }
 
 // ============================================================
