@@ -15,8 +15,8 @@
 //               1 = original size, 2 = double, 3 = triple
 // ------------------------------------------------------------
 const SPRITE = {
-  frameWidth:  75,  // width of one frame  (300px / 4 frames)
-  frameHeight: 150, // height of one frame (600px / 4 rows)
+  frameWidth:  313.5,  // width of one frame  (300px / 4 frames)
+  frameHeight: 313.5, // height of one frame (600px / 4 rows)
   numFrames:   4,   // frames per row
   animSpeed:   20,  // draw() frames per sprite frame (higher = slower)
   scale:       0.5, // draw at half original size
@@ -69,7 +69,7 @@ let characterSheet; // the loaded sprite sheet image
 // ============================================================
 function preload() {
   // loadImage() loads the sprite sheet before setup() runs
-  characterSheet = loadImage("frog1.png");
+  characterSheefrot = loadImage("frog2.png");
 }
 
 // ============================================================
