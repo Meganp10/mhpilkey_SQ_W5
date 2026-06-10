@@ -482,7 +482,7 @@ function drawHUD() {
 // in front of the maze, character, and HUD.
 // ------------------------------------------------------------
 function drawWinScreen() {
-  fill(0, 0, 0, 160);
+  fill(30, 200, 120, 180); // semi-transparent green
   rectMode(CORNER);
   rect(0, 0, width, height);
 
