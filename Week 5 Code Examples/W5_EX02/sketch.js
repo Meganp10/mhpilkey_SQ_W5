@@ -8,9 +8,9 @@
 // Adjust these values to match your own sprite sheet.
 // ------------------------------------------------------------
 const COIN = {
-  frameWidth:  56.25,  // 256px total / 8 frames
+  frameWidth:  225/4,  // 256px total / 8 frames
   frameHeight: 225,  // only one row, full sheet height
-  numFrames:   3,   // 3 frames of spin animation
+  numFrames:   4,   // 4 frames of spin animation
   animSpeed:   6,   // draw() frames per sprite frame (lower = faster)
   scale:       2.0, // scale up so the coin is visible on screen
 };
@@ -25,11 +25,10 @@ const COIN = {
 // they won't all spin in sync.
 // ------------------------------------------------------------
 let coins = [
-  { x: 200, y: 150, frame: 0, frameTimer: 0 },
-  { x: 400, y: 280, frame: 2, frameTimer: 0 }, // offset start frame for variety
-  { x: 600, y: 180, frame: 5, frameTimer: 0 },
-  { x: 300, y: 350, frame: 3, frameTimer: 0 },
-  { x: 550, y: 360, frame: 1, frameTimer: 0 },
+  { x: 100, y: 225, frame: 0, frameTimer: 0 },
+  { x: 250, y: 225, frame: 1, frameTimer: 0 },
+  { x: 400, y: 225, frame: 2, frameTimer: 0 },
+  { x: 550, y: 225, frame: 3, frameTimer: 0 }
 ];
 
 let coinSheet; // the loaded coin sprite sheet image
