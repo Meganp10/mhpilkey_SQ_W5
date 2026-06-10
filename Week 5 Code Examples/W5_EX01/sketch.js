@@ -69,7 +69,7 @@ let characterSheet; // the loaded sprite sheet image
 // ============================================================
 function preload() {
   // loadImage() loads the sprite sheet before setup() runs
-  characterSheet = loadImage("frog.jpeg");
+  characterSheet = loadImage("frog1.png");
 }
 
 // ============================================================
