@@ -40,7 +40,7 @@ let coinSheet; // the loaded coin sprite sheet image
 // are ready before the sketch tries to use them.
 // ============================================================
 function preload() {
-  coinSheet = loadImage("assets/images/gold.png");
+  coinSheet = loadImage("assets/images/coins1.png");
 }
 
 // ============================================================
