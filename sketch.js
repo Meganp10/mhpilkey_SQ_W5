@@ -11,6 +11,8 @@
 let timerStarted = false;
 let timeLeft = 120; // seconds
 let lastTimeCheck = 0;
+let showInstructions = true;
+
 
 // ------------------------------------------------------------
 // SPRITE CONFIGURATION — Walking Character
@@ -179,6 +181,34 @@ function setup() {
   }
 }
 
+function drawInstructionScreen() {
+  // Blue background
+  fill(0, 90, 200);
+  rectMode(CORNER);
+  rect(0, 0, width, height);
+
+  // White text
+  fill(255);
+  textAlign(CENTER);
+  textFont("monospace");
+
+  textSize(36);
+  text("Frog Maze Instructions", width / 2, height / 2 - 120);
+
+  textSize(20);
+  text("Use WASD keys to move:", width / 2, height / 2 - 40);
+  text("W = Up", width / 2, height / 2 - 10);
+  text("A = Left", width / 2, height / 2 + 20);
+  text("S = Down", width / 2, height / 2 + 50);
+  text("D = Right", width / 2, height / 2 + 80);
+
+  textSize(20);
+  text("You can also use the Arrow Keys", width / 2, height / 2 + 130);
+
+  textSize(26);
+  text("Press ENTER to start", width / 2, height / 2 + 200);
+}
+
 // ============================================================
 // draw()
 // Runs repeatedly in a loop after setup() finishes.
@@ -201,6 +231,13 @@ function draw() {
   drawCharacter();
   drawHUD();
 
+  // Show instructions until ENTER is pressed
+  if (showInstructions) {
+    drawInstructionScreen();
+    return;
+  }
+
+
   if (timerStarted && !gameWon) {
   let now = millis();
   if (now - lastTimeCheck >= 1000) {
@@ -213,7 +250,6 @@ function draw() {
     }
   }
 }
-
   // Win screen is drawn last so it appears on top of everything
   if (gameWon) {
     drawWinScreen();
@@ -299,51 +335,65 @@ function drawCoins() {
 // Returns early if the game is already won.
 // ------------------------------------------------------------
 function handleInput() {
-  if (gameWon) return;
+  if (gameWon || showInstructions) return;
 
   player.isMoving = false;
 
-  if (keyIsDown(87)) { // W — up
+  // UP: W or UP_ARROW
+  if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
     player.y -= player.speed;
     player.direction = "up";
     player.isMoving = true;
-    if (!timerStarted) {
-  timerStarted = true;
-  lastTimeCheck = millis();
-}
 
+    if (!timerStarted) {
+      timerStarted = true;
+      lastTimeCheck = millis();
+    }
   }
-  if (keyIsDown(83)) { // S — down
+
+  // DOWN: S or DOWN_ARROW
+  if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
     player.y += player.speed;
     player.direction = "down";
     player.isMoving = true;
-    if (!timerStarted) {
-  timerStarted = true;
-  lastTimeCheck = millis();
-}
 
+    if (!timerStarted) {
+      timerStarted = true;
+      lastTimeCheck = millis();
+    }
   }
-  if (keyIsDown(65)) { // A — left
+
+  // LEFT: A or LEFT_ARROW
+  if (keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
     player.x -= player.speed;
     player.direction = "left";
     player.isMoving = true;
-    if (!timerStarted) {
-  timerStarted = true;
-  lastTimeCheck = millis();
-}
 
+    if (!timerStarted) {
+      timerStarted = true;
+      lastTimeCheck = millis();
+    }
   }
-  if (keyIsDown(68)) { // D — right
+
+  // RIGHT: D or RIGHT_ARROW
+  if (keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {
     player.x += player.speed;
     player.direction = "right";
     player.isMoving = true;
-    if (!timerStarted) {
-  timerStarted = true;
-  lastTimeCheck = millis();
-}
 
+    if (!timerStarted) {
+      timerStarted = true;
+      lastTimeCheck = millis();
+    }
   }
 }
+
+function keyPressed() {
+  if (showInstructions && keyCode === ENTER) {
+    showInstructions = false;
+  }
+}
+
 
 // ------------------------------------------------------------
 // resolveWallCollisions()
