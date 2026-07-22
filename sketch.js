@@ -455,7 +455,7 @@ function drawCharacter() {
   image(characterSheet, player.x, player.y, dw, dh, sx, sy, SPRITE.frameWidth, SPRITE.frameHeight);
 }
 
-// ------------------------------------------------------------
+/// ------------------------------------------------------------
 // drawHUD()
 // HUD = Heads Up Display.
 // Shows coin count and exit status at the top of the screen.
