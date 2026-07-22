@@ -8,11 +8,6 @@
 //   - Wall collision to keep the player inside the maze
 //   - Collect all coins to unlock the exit
 // ============================================================
-let timerStarted = false;
-let timeLeft = 120; // seconds
-let lastTimeCheck = 0;
-let showInstructions = true;
-
 
 // ------------------------------------------------------------
 // SPRITE CONFIGURATION — Walking Character
@@ -47,7 +42,7 @@ const COIN = {
   frameWidth: 212.25,
   frameHeight: 840,
   numFrames: 4,
-  animSpeed: 3,
+  animSpeed: 6,
   scale: 0.25
 };
 
@@ -82,7 +77,7 @@ const MAZE = [
 // Colours for each tile type — stored as RGB arrays
 const TILE_COLORS = {
   0: [40,  40,  50 ], // floor — dark grey
-  1: [255,  140,  0], // wall  — orange
+  1: [80,  60,  100], // wall  — purple-grey
   2: [40,  40,  50 ], // start — same as floor
   3: [40,  40,  50 ], // coin  — same as floor (coin drawn on top)
   4: [60,  100, 80 ], // exit  — green tint when locked
@@ -104,9 +99,6 @@ let player = {
   frameTimer:   0,
   direction:    "down",
   isMoving:     false,
-  isSpinning: false,
-  spinAngle: 0,
-
 
   // Collision box half-dimensions
   // Smaller than the sprite so the player can navigate tight corridors
@@ -181,34 +173,6 @@ function setup() {
   }
 }
 
-function drawInstructionScreen() {
-  // Blue background
-  fill(0, 90, 200);
-  rectMode(CORNER);
-  rect(0, 0, width, height);
-
-  // White text
-  fill(255);
-  textAlign(CENTER);
-  textFont("monospace");
-
-  textSize(36);
-  text("Frog Maze Instructions", width / 2, height / 2 - 120);
-
-  textSize(20);
-  text("Use WASD keys to move:", width / 2, height / 2 - 40);
-  text("W = Up", width / 2, height / 2 - 10);
-  text("A = Left", width / 2, height / 2 + 20);
-  text("S = Down", width / 2, height / 2 + 50);
-  text("D = Right", width / 2, height / 2 + 80);
-
-  textSize(20);
-  text("You can also use the Arrow Keys", width / 2, height / 2 + 130);
-
-  textSize(26);
-  text("Press ENTER to start", width / 2, height / 2 + 200);
-}
-
 // ============================================================
 // draw()
 // Runs repeatedly in a loop after setup() finishes.
@@ -231,25 +195,6 @@ function draw() {
   drawCharacter();
   drawHUD();
 
-  // Show instructions until ENTER is pressed
-  if (showInstructions) {
-    drawInstructionScreen();
-    return;
-  }
-
-
-  if (timerStarted && !gameWon) {
-  let now = millis();
-  if (now - lastTimeCheck >= 1000) {
-    timeLeft--;
-    lastTimeCheck = now;
-
-    if (timeLeft <= 0) {
-      timeLeft = 0;
-      gameWon = true; // or trigger a "game over" screen instead
-    }
-  }
-}
   // Win screen is drawn last so it appears on top of everything
   if (gameWon) {
     drawWinScreen();
@@ -335,65 +280,31 @@ function drawCoins() {
 // Returns early if the game is already won.
 // ------------------------------------------------------------
 function handleInput() {
-  if (gameWon || showInstructions) return;
+  if (gameWon) return;
 
   player.isMoving = false;
 
-  // UP: W or UP_ARROW
-  if (keyIsDown(87) || keyIsDown(UP_ARROW)) {
+  if (keyIsDown(87)) { // W — up
     player.y -= player.speed;
     player.direction = "up";
     player.isMoving = true;
-
-    if (!timerStarted) {
-      timerStarted = true;
-      lastTimeCheck = millis();
-    }
   }
-
-  // DOWN: S or DOWN_ARROW
-  if (keyIsDown(83) || keyIsDown(DOWN_ARROW)) {
+  if (keyIsDown(83)) { // S — down
     player.y += player.speed;
     player.direction = "down";
     player.isMoving = true;
-
-    if (!timerStarted) {
-      timerStarted = true;
-      lastTimeCheck = millis();
-    }
   }
-
-  // LEFT: A or LEFT_ARROW
-  if (keyIsDown(65) || keyIsDown(LEFT_ARROW)) {
+  if (keyIsDown(65)) { // A — left
     player.x -= player.speed;
     player.direction = "left";
     player.isMoving = true;
-
-    if (!timerStarted) {
-      timerStarted = true;
-      lastTimeCheck = millis();
-    }
   }
-
-  // RIGHT: D or RIGHT_ARROW
-  if (keyIsDown(68) || keyIsDown(RIGHT_ARROW)) {
+  if (keyIsDown(68)) { // D — right
     player.x += player.speed;
     player.direction = "right";
     player.isMoving = true;
-
-    if (!timerStarted) {
-      timerStarted = true;
-      lastTimeCheck = millis();
-    }
   }
 }
-
-function keyPressed() {
-  if (showInstructions && keyCode === ENTER) {
-    showInstructions = false;
-  }
-}
-
 
 // ------------------------------------------------------------
 // resolveWallCollisions()
@@ -457,19 +368,14 @@ function checkCoinCollection() {
   for (let i = 0; i < coins.length; i++) {
     if (coins[i].collected) continue;
 
+    // dist() returns the distance between two points
     let d = dist(player.x, player.y, coins[i].x, coins[i].y);
-
     if (d < TILE_SIZE * 0.6) {
       coins[i].collected = true;
       coinsCollected++;
-
-      // Start spin animation
-      player.isSpinning = true;
-      player.spinAngle = 0;
     }
   }
 }
-
 
 // ------------------------------------------------------------
 // checkExit()
@@ -534,34 +440,20 @@ function animateSprite() {
 // index by frameHeight.
 // ------------------------------------------------------------
 function drawCharacter() {
+  // Get the correct row and offset for the current direction
   let row    = SPRITE.rows[player.direction];
   let offset = SPRITE.offsets[player.direction];
 
+  // Source position on the sprite sheet (with offset applied)
   let sx = (player.currentFrame * SPRITE.frameWidth)  + offset.x;
   let sy = (row                 * SPRITE.frameHeight) + offset.y;
 
+  // Draw size (original frame size multiplied by scale)
   let dw = SPRITE.frameWidth  * SPRITE.scale;
   let dh = SPRITE.frameHeight * SPRITE.scale;
 
-  push();
-
-  translate(player.x, player.y);
-
-  if (player.isSpinning) {
-    rotate(radians(player.spinAngle));
-    player.spinAngle += 15;
-
-    if (player.spinAngle >= 360) {
-      player.isSpinning = false;
-      player.spinAngle = 0;
-    }
-  }
-
-  image(characterSheet, 0, 0, dw, dh, sx, sy, SPRITE.frameWidth, SPRITE.frameHeight);
-
-  pop();
+  image(characterSheet, player.x, player.y, dw, dh, sx, sy, SPRITE.frameWidth, SPRITE.frameHeight);
 }
-
 
 // ------------------------------------------------------------
 // drawHUD()
@@ -574,20 +466,14 @@ function drawHUD() {
   textSize(14);
   textAlign(LEFT);
   textFont("monospace");
+  text("Coins: " + coinsCollected + " / " + coins.length, 10, 20);
 
-  // Timer (added later)
-  text("Coins: " + coinsCollected + " / " + coins.length, width - 150, 20);
-
+  // Show exit hint once all coins are collected
   if (coinsCollected === coins.length) {
     fill(30, 200, 120);
-    text("Exit open!", width - 150, 40);
+    text("Exit is open! Find the green tile.", 10, 40);
   }
-  fill(255);
-textSize(20);
-text("Time: " + timeLeft, 10, 20);
-
 }
-
 
 // ------------------------------------------------------------
 // drawWinScreen()
